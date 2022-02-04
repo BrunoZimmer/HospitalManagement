@@ -12,12 +12,38 @@ class Decision:
     """A class of functions to decision"""
     def updatePatients(time):
         waitingPatients = get_pat_waiting("Waiting")
+        freeRooms = get_beac_free()
         
-        for waitingPatient in waitingPatients:
-            print(waitingPatient)
-            update_depart(waitingPatient.name, waitingPatient.id, waitingPatient.arrival, dt.datetime.now())
-            update_priority(waitingPatient.id, waitingPatient.makepriority)
+        waitingPatients.sort(key=lambda patient: patient.priority)
+        freeRooms.sort(key=lambda beacon: beacon.price)
+        #make the two calls ordered
+        if waitingPatients:
+            for waitingPatient in waitingPatients:
+                print(waitingPatient)
+                update_depart(waitingPatient.name, waitingPatient.id, waitingPatient.arrival, dt.datetime.now())
+                update_priority(waitingPatient.id, waitingPatient.makepriority)
+                if freeRooms:
+                    for freeRoom in freeRooms:
+                        if(waitingPatient.specs == freeRoom.specs and freeRoom.bedsFree - freeRoom.reservation >0):
+                            print("The patient "+ waitingPatient.name + "can go to the room " + freeRoom.room)
+                            input("Press something to continue")
+                            #Here we need to add the exception to when the receptionist disagree the program
+                            update_state(waitingPatient.id, "Alocated")
+                            update_reservation(freeRoom.id, freeRoom.reservation+1)
             
+
+    def timeWaitingName(name):
+        pat = get_pat_by_name(name)
+        beaconsCompatibles = get_beac_specs(pat.specs)
+
+        beaconsCompatibles.sort(key=lambda beaconAvai: beaconAvai.depart, reverse=True)
+
+        beacon = CreateBeacon(beaconsCompatibles[0])
+
+        connec = get_connec_by_BeacID(beacon.id)
+        patient = get_pat_by_ID(connec.pat_ID)
+
+        return (beaconsCompatibles[0].depart.timestamp() + patient.stayingTime)-  dt.datetime.now().timestamp()
 
     def attTime(time):
         return (dt.datetime.now().timestamp() - time.timestamp())
@@ -47,9 +73,9 @@ class Decision:
         disease = input("Disease of the Patient(influenza H3N2, Covid-19): ")
         specs = input("Specifications of the Patient(diabetes, high pressure): ")
         
-        pat_1 = Patient(id, name, priority, arrive , depart, stayingTime, type, disease, specs)
+        pat_aux = Patient(id, name, priority, arrive , depart, stayingTime, "Waiting", type, disease, specs)
 
-        insert_pat(pat_1)
+        insert_pat(pat_aux)
         input("Press something to continue")
 
     def checkQueue():
@@ -62,6 +88,15 @@ class Decision:
         input("Press something to continue")
         os.system('cls')
         
+    def checkQueue():
+        patients = get_pat_all()
+        
+        sorted(patients, key=lambda patient: patient[2])
+        for patient in patients:
+            print( "Name: " + patient[1] + ' '*(30-len(patient[1])) + "Arrive time:" + str(patient[3]) )
+        print('\n')
+        input("Press something to continue")
+        os.system('cls')
     
     def getKeyboard():
         #this is boolean for whether the keyboard has bene hit

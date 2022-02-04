@@ -51,6 +51,7 @@ while(1):
             #tentar encontrar uma sala vazia para o paciente 
             #se nao encontrar dizer o tempo que vai demorar pra encontrar baseado no tempo estimado das pessoas que tao no quarto   
         print("3 - Check the queue:")
+        #check probably waiting time
         permission = 0
 
     if option != False:

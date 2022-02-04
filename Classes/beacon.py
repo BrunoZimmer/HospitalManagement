@@ -10,6 +10,7 @@ class Beacon:
         # id text,
         # bedsTotal integer,
         # bedsFree integer,
+        # beds
         # price INTEGER,
         # reservation INTEGER,
         # room text

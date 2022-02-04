@@ -49,6 +49,11 @@ def update_priority(id, priority):
         c.execute("""UPDATE patients SET priority = :priority WHERE id = :id""",
                 {'id':id, 'priority': priority})
 
+def update_state(id, state):
+    with conn:
+        c.execute("""UPDATE patients SET state = :state WHERE id = :id""",
+                {'id':id, 'state': state})
+
 def remove_pat(id):
     with conn:
         c.execute("DELETE FROM patients WHERE id = :id",
@@ -72,6 +77,14 @@ def get_beac_all():
     c.execute("SELECT * FROM beacons ")
     return c.fetchall()
 
+def get_beac_free():
+    c.execute("SELECT * FROM beacons WHERE bedsFree > 0")
+    return c.fetchall()
+
+def get_beac_specs(specs):
+    c.execute("SELECT * FROM beacons WHERE specs = ?", (specs, ))
+    return c.fetchall()
+
 def get_beacon_by_room(room):
     c.execute("SELECT * FROM beacons WHERE room = ?", (room, ))
     return c.fetchone()
@@ -80,13 +93,20 @@ def get_room_by_disease_specs(room):
     c.execute("SELECT * FROM beacons WHERE room = ?", (room, ))
     return c.fetchone()
 
-def update_beds(id, room, reservation, bedsFree):
+def update_beds(id, bedsFree):
     with conn:
-        c.execute("""UPDATE beacons SET reservation = :reservation AND bedsFree = :bedsFree
-            WHERE id = :id AND room = :room""",
-            {'id':id, 'room':room, 'reservation':reservation, 'bedsFree':bedsFree}    
+        c.execute("""UPDATE beacons SET bedsFree = :bedsFree
+            WHERE id = :id """,
+            {'id':id, 'bedsFree':bedsFree}    
             )
 
+def update_reservation(id, reservation):
+    with conn:
+        c.execute("""UPDATE beacons SET reservation = :reservation
+            WHERE id = :id """,
+            {'id':id, 'reservation':reservation}    
+            )
+            
 def remove_beacon(id, room):
     with conn:
         c.execute("DELETE FROM beacons WHERE id = :id",
@@ -105,7 +125,7 @@ def insert_connection(connec):
                         (connec.con_ID, connec.beac_ID, connec.pat_ID, connec.distance)
                     )
 
-def get_room_by_ID(beac_ID):
+def get_connec_by_BeacID(beac_ID):
         c.execute("SELECT * FROM connections WHERE beac_ID = ?", (beac_ID, ))
         return c.fetchone()
 
