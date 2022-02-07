@@ -13,17 +13,29 @@ class Decision:
     def updatePatients(time):
         waitingPatients = get_pat_waiting("Waiting")
         freeRooms = get_beac_free()
+
+        patients= []
         
-        waitingPatients.sort(key=lambda patient: patient.priority)
-        freeRooms.sort(key=lambda beacon: beacon.price)
+        for patientList in waitingPatients:
+            patients.append(CreatePatient(patientList))
+        patients.sort(key=lambda patient: patient.priority)
+
+
+        rooms= []
+        
+        for roomList in freeRooms:
+            rooms.append(CreateBeacon(roomList))
+        rooms.sort(key=lambda room: room.price)
+
         #make the two calls ordered
-        if waitingPatients:
-            for waitingPatient in waitingPatients:
+        if patients:
+            for waitingPatient in patients:
                 print(waitingPatient)
-                update_depart(waitingPatient.name, waitingPatient.id, waitingPatient.arrival, dt.datetime.now())
-                update_priority(waitingPatient.id, waitingPatient.makepriority)
-                if freeRooms:
-                    for freeRoom in freeRooms:
+                update_depart(waitingPatient.id, waitingPatient.arrival, dt.datetime.now())
+                waitingPatient.priority = waitingPatient.makePriority
+                update_priority(waitingPatient.id, waitingPatient.priority)
+                if rooms:
+                    for freeRoom in rooms:
                         if(waitingPatient.specs == freeRoom.specs and freeRoom.bedsFree - freeRoom.reservation >0):
                             print("The patient "+ waitingPatient.name + "can go to the room " + freeRoom.room)
                             input("Press something to continue")

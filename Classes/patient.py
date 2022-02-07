@@ -1,4 +1,5 @@
 import math
+import datetime
 from queue import PriorityQueue
 
 
@@ -34,7 +35,12 @@ class Patient:
 
     @property
     def waitingTime(self):
-        return (self.depart.timestamp() - self.arrival.timestamp())
+        a = datetime.datetime.now()
+        # self.depart = datetime.datetime.strptime(self.depart, '%Y-%m-%d %H:%M:%S.%f')
+        # self.arrival = datetime.datetime.strptime(self.arrival, '%Y-%m-%d %H:%M:%S.%f')
+        
+        return (float(self.depart.timestamp()) - float(self.arrival.timestamp()))
+        #return float(self.arrival)
 
     @property
     def diseaseSpec(self):
@@ -55,7 +61,9 @@ class Patient:
     
     @property
     def makePriority(self):
-        return self.waitingPriority +self.typePriority
+        print(self.waitingPriority)
+        print(self.typePriority)
+        return self.waitingPriority + self.typePriority
     
     def __repr(self):
         return "Patient('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(

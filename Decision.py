@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+import datetime
 from decisionClass import Decision as Dec
 import Database.Source.DataTypesFunctions as db
 from Classes.patient import *
@@ -14,6 +14,8 @@ import os
     For each Decision we will find in the group of the beacons/rooms which one can comply every specs 
     of the person and in these room which is the highest cost-benefit ratio(cheapear)  
  """
+ 
+""" 
 pat_aux = Patient(
     "121",
     "Bruno Zimmer",
@@ -25,12 +27,12 @@ pat_aux = Patient(
     "Emergency",
     "influenza H3N2",
     "No specifications"
-)
+) """
 
 
 # def patPriority(Patient pat):
 #     return part.waitingTime
-time  = datetime.now()
+time  = datetime.datetime.now()
 permission = 1
 os.system('cls')
 
@@ -80,7 +82,7 @@ while(1):
         
     if(Dec.attTime(time) > 2):
         Dec.updatePatients(time)
-        time = datetime.now()
+        time = datetime.datetime.now()
 
 
 
