@@ -4,7 +4,18 @@ from queue import PriorityQueue
 
 
 def CreatePatient(list):
-    pat = Patient(list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7],list[8],list[9])
+    pat = Patient(
+            list[0],
+            list[1],
+            list[2],
+            datetime.datetime.strptime(list[3], '%Y-%m-%d %H:%M:%S.%f'),#list[3],
+            datetime.datetime.strptime(list[4], '%Y-%m-%d %H:%M:%S.%f'),#list[4],
+            list[5],
+            list[6],
+            list[7],
+            list[8],
+            list[9]
+        )
     
     return pat
 
@@ -35,12 +46,7 @@ class Patient:
 
     @property
     def waitingTime(self):
-        a = datetime.datetime.now()
-        # self.depart = datetime.datetime.strptime(self.depart, '%Y-%m-%d %H:%M:%S.%f')
-        # self.arrival = datetime.datetime.strptime(self.arrival, '%Y-%m-%d %H:%M:%S.%f')
-        
         return (float(self.depart.timestamp()) - float(self.arrival.timestamp()))
-        #return float(self.arrival)
 
     @property
     def diseaseSpec(self):
@@ -61,8 +67,6 @@ class Patient:
     
     @property
     def makePriority(self):
-        print(self.waitingPriority)
-        print(self.typePriority)
         return self.waitingPriority + self.typePriority
     
     def __repr(self):

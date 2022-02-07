@@ -77,7 +77,7 @@ while(1):
         if(option.decode() == str(3)):
             Dec.checkQueue()
 
-        time = datetime.now()
+        time = datetime.datetime.now()
         permission = 1
         
     if(Dec.attTime(time) > 2):

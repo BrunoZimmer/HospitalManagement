@@ -30,7 +30,7 @@ class Decision:
         #make the two calls ordered
         if patients:
             for waitingPatient in patients:
-                print(waitingPatient)
+                #print(waitingPatient)
                 update_depart(waitingPatient.id, waitingPatient.arrival, dt.datetime.now())
                 waitingPatient.priority = waitingPatient.makePriority
                 update_priority(waitingPatient.id, waitingPatient.priority)
