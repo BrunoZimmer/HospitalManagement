@@ -51,8 +51,9 @@ def update_priority(id, priority):
 
 def update_state(id, state):
     with conn:
-        c.execute("""UPDATE patients SET state = :state WHERE id = :id""",
-                {'id':id, 'state': state})
+        c.execute("""UPDATE patients SET state = :state 
+                WHERE id = :id""",
+                {'state': state, 'id':id})
 
 def remove_pat(id):
     with conn:
@@ -104,7 +105,7 @@ def update_reservation(id, reservation):
     with conn:
         c.execute("""UPDATE beacons SET reservation = :reservation
             WHERE id = :id """,
-            {'id':id, 'reservation':reservation}    
+            {'reservation':reservation, 'id':id}    
             )
             
 def remove_beacon(id, room):

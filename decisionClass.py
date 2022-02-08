@@ -36,12 +36,17 @@ class Decision:
                 update_priority(waitingPatient.id, waitingPatient.priority)
                 if rooms:
                     for freeRoom in rooms:
+                        # print("Updated")
                         if(waitingPatient.specs == freeRoom.specs and freeRoom.bedsFree - freeRoom.reservation >0):
                             print("The patient "+ waitingPatient.name + "can go to the room " + freeRoom.room)
                             input("Press something to continue")
                             #Here we need to add the exception to when the receptionist disagree the program
                             update_state(waitingPatient.id, "Alocated")
                             update_reservation(freeRoom.id, freeRoom.reservation+1)
+                            update_beds(freeRoom.id, freeRoom.bedsFree-1)
+                            os.system('cls')
+                            break
+        
             
 
     def timeWaitingName(name):
@@ -61,6 +66,7 @@ class Decision:
         return (dt.datetime.now().timestamp() - time.timestamp())
         
     def showTotalFreeBeds():
+        os.system('cls')
         beacons = get_beac_all()
         
         freeBeds = 0
@@ -74,6 +80,7 @@ class Decision:
         os.system('cls')
 
     def addPatientQueue():
+        os.system('cls')
         print("Ask the patient informations"+"\n")
         id = input("ID of the Patient: ")
         name = input("Name of the Patient: ")
@@ -89,27 +96,28 @@ class Decision:
 
         insert_pat(pat_aux)
         input("Press something to continue")
+        os.system('cls')
 
     def checkQueue():
-        patients = get_pat_all()
+        os.system('cls')
         
-        sorted(patients, key=lambda patient: patient[2])
-        for patient in patients:
-            print( "Name: " + patient[1] + ' '*(30-len(patient[1])) + "Arrive time:" + str(patient[3]) )
+        waitingPatients = get_pat_waiting("Waiting")
+
+        patientsWaiting= []
+        
+        for patientList in waitingPatients:
+            patientsWaiting.append(CreatePatient(patientList))
+            print(patientList[1])
+
+        patientsWaiting.sort(key=lambda patientW: patientW.priority)
+
+        
+        for patientW in patientsWaiting:
+            print( "Name: " + patientW.name + ' '*(30-len(patientW.name)) + "Arrive time:" + str(patientW.arrival) )
         print('\n')
         input("Press something to continue")
         os.system('cls')
         
-    def checkQueue():
-        patients = get_pat_all()
-        
-        sorted(patients, key=lambda patient: patient[2])
-        for patient in patients:
-            print( "Name: " + patient[1] + ' '*(30-len(patient[1])) + "Arrive time:" + str(patient[3]) )
-        print('\n')
-        input("Press something to continue")
-        os.system('cls')
-    
     def getKeyboard():
         #this is boolean for whether the keyboard has bene hit
         x = msvcrt.kbhit()
@@ -119,3 +127,14 @@ class Decision:
         else:
             ret = False
         return ret
+
+"""     def checkQueue():
+        patients = get_pat_all()
+        
+        sorted(patients, key=lambda patient: patient[2])
+        for patient in patients:
+            print( "Name: " + patient[1] + ' '*(30-len(patient[1])) + "Arrive time:" + str(patient[3]) )
+        print('\n')
+        input("Press something to continue")
+        os.system('cls') """
+    

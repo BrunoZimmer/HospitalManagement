@@ -44,7 +44,7 @@ pat_1 = Patient(
         "Waiting",
         "Regular",
         "influenza H3N2",
-        "No specifications"
+        "Regular"
         )
 pat_2 = Patient("122",
          "Klaus Gamer",
@@ -55,7 +55,7 @@ pat_2 = Patient("122",
          "Waiting",
          "Emergency",
          "influenza H1N1",
-         "No specifications")
+         "Emergency")
 pat_3 = Patient("123",
           "Gilberto Xaissem",
          0.55,
@@ -75,7 +75,7 @@ pat_4 = Patient("124",
          "Waiting",
          "Covid-19",
          "Covid-19",
-         "Diabetes ")
+         "Covid")
 
 db.insert_pat(pat_1)
 db.insert_pat(pat_2)
